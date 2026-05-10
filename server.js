@@ -8,7 +8,7 @@ const todoRoutes = require('./routes/todos');
 
 // Initialize express app
 const app = express();
-const port = 5001;
+const port = process.env.PORT || 5001;
 dotenv.config();
 
 // Middleware
@@ -27,14 +27,21 @@ app.get('/', (req, res) => {
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/taskmanager')
     .then(() => console.log('✅ MongoDB Connected Successfully!'))
-    .catch(err => console.error('MongoDB connection error:', err));
+    .catch(err => {
+        console.error('MongoDB connection error:', err);
+        process.exit(1);
+    });
 
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/todos', todoRoutes);
-
-// Add this line with your other routes
 app.use('/api/users', require('./routes/users'));
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+});
 
 // Start server
 app.listen(port, () => {
