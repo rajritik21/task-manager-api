@@ -13,7 +13,7 @@ dotenv.config();
 
 // Middleware
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://RitikRanja-n.github.io', 'https://RitikRanja-n.github.io/task-manager-frontend'],
+    origin: ['http://localhost:3000', 'https://ritikranja-n.github.io', 'https://RitikRanja-n.github.io/task-manager-frontend'],
     credentials: true
 }));
 
